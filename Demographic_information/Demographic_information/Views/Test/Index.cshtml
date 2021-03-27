@@ -1,0 +1,83 @@
+﻿@model Demographic_information.Models.DemographicTable
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Files/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        <form method="post">
+            <table class="table table-responsive">
+                <tr>
+                    <td>
+                        @Html.DisplayName("Number Id")
+                        @Html.TextBoxFor(n => n.DEmTypeID)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Search" class="btn btn-primary" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+        @if (ViewBag.show != null)
+        {
+            <table class="table" border="1">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Answer Descripton AR</th>
+                        <th>Answer Descripton EN</th>
+                        <th>Weight</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in (List<Demographic_information.Models.TabDemographicDTLTable>)ViewBag.show)
+                    {
+                        <tr>
+                            <td>
+                                @item.ChoiceAR
+                            </td>
+                            <td>
+                                @item.ChoiceEN
+                            </td>
+                            <td>
+                                @item.WieghtValue
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        @Ajax.ActionLink("Creat New Demography", "Create", new { id = 1 },
+new AjaxOptions()
+        {
+        UpdateTargetId = "d1",
+        InsertionMode = InsertionMode.Replace,
+        OnComplete = "show"
+        }, new { @class = "btn btn-primary" }
+        )
+    </div>
+    <br />
+    <div id="d1">
+
+    </div>
+
+    <script src="~/Files/jquery.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+    @if (Session["relo"] != null)
+    {
+        Session["relo"] = null;
+
+        <script>window.location.reload();</script>
+    }
+</body>
+</html>

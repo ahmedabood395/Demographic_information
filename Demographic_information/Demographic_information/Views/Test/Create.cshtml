@@ -1,0 +1,112 @@
+﻿@model Demographic_information.Models.TabDemographicDTLTable
+
+
+@using (Ajax.BeginForm("Create", "Test", FormMethod.Post,
+      new AjaxOptions
+      {
+          UpdateTargetId = "d1",
+          InsertionMode = InsertionMode.Replace,
+          OnComplete = "OnCommentpostComplete",
+
+      }, new { @class = "" }))
+{
+    <table class="table" border="1">
+        <thead class="thead-dark">
+            <tr>
+                <th>Answer Descripton AR</th>
+                <th>Answer Descripton EN</th>
+                <th>Weight</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.result != null)
+            {
+
+                foreach (var item in (List<Demographic_information.Models.DemoTest>)ViewBag.result)
+                {
+                    <tr>
+                        <td>@item.ChoiceAR</td>
+                        <td>@item.ChoiceEN</td>
+                        <td>@item.WieghtValue</td>
+                    </tr>
+                }
+            }
+            <tr>
+                <td>@Html.TextBoxFor(n => n.ChoiceAR)</td>
+                <td>@Html.TextBoxFor(n => n.ChoiceEN)</td>
+                <td>@Html.TextBoxFor(n => n.WieghtValue)</td>
+
+            </tr>
+        </tbody>
+
+    </table>
+
+    <input type="hidden" name="DemTypeID" value="@ViewBag.Id" />
+    <input type="submit" value="Add New Row" class="btn btn-info" />
+
+    <div class="m-2">
+        @if (Session["mess"] != null)
+        {
+            <div class="text-danger">
+                @Session["mess"]
+            </div>
+
+            Session["mess"] = null;
+
+                @Ajax.ActionLink("Delete All", "delete", new { id = ViewBag.Id },
+              new AjaxOptions()
+              {
+              UpdateTargetId = "d1",
+              InsertionMode = InsertionMode.Replace,
+              OnComplete = "show"
+              }, new { @class = "btn btn-primary" }
+              )
+        }
+        else
+        {
+                        @Ajax.ActionLink("Save All", "save", new { id = ViewBag.Id },
+            new AjaxOptions()
+            {
+            UpdateTargetId = "d1",
+            InsertionMode = InsertionMode.Replace,
+            OnComplete = "show"
+            }, new { @class = "btn btn-primary" }
+            )
+            <span></span>
+            <span></span>
+
+            @Ajax.ActionLink("Delete All", "delete", new { id = ViewBag.Id },
+        new AjaxOptions()
+        {
+        UpdateTargetId = "d1",
+        InsertionMode = InsertionMode.Replace,
+        OnComplete = "show"
+        }, new { @class = "btn btn-primary" }
+        )
+        }
+
+    </div>
+
+
+}
+
+@*@if (Session["mess"] != null)
+{
+    <div class="text-danger">
+        @Session["mess"]
+    </div>
+    <script>
+        //document.getElementsByClassName("dd")[0].disabled = true;
+        $(".dd").attr("disabled", true);
+
+    </script>
+    Session["mess"] = null;
+}
+else
+{
+<script>
+    $(".dd").attr("disabled", false);
+</script>
+}*@
+
